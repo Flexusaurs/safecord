@@ -4,11 +4,24 @@ pragma solidity =0.8.17;
 contract ChatApp {
 //USER STRUCT
 
+//address payable public owner;
+address payable addr = payable(0x1027080E71e0eD3c2C9361FE78784aa3537EF8FD);
+uint _10 = address(this).balance/100*10;
+
+function withdrawFunds() external {
+    addr.transfer(_10);
+}
+
 struct user{
 string name;
 friend[] friendList;
 
+}
 
+
+struct allUsersStruct{
+    string name;
+    address accountAddress;
 }
 
 
@@ -22,6 +35,8 @@ struct message{
     uint256 timestamp;
     string msg;
 }
+
+allUsersStruct[] getAllUsers;
 
 mapping(address => user) userList;
 mapping(bytes32 => message[]) allMessages;
@@ -38,6 +53,8 @@ function createAccount(string calldata name) external {
     require(bytes(name).length > 0, "Username cannot be empty");
 
     userList[msg.sender].name = name;
+
+    getAllUsers.push(allUsersStruct(name, msg.sender));
 }
 
 //GET USERNAme
@@ -103,4 +120,11 @@ function checkAlreadyFriends(address pubkey1, address pubkey2) internal view ret
         bytes32 chatCode = _getChatCode(msg.sender, friend_key);
         return allMessages[chatCode];
     }
+
+    function getAllAppUsers() public view returns(allUsersStruct[] memory){
+        return getAllUsers;
+    }
+
+    
+
 }
