@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 
 //INTERNAL IMPORT
 import {
-  ChechIfWalletConnected,
+  checkIfWalletConnected,
   connectWallet,
   connectingWithContract,
 } from "../util/apiFeature";
@@ -116,7 +116,7 @@ export const ChatAppProvider = ({ children }) => {
   //READ INFO
   const readUser = async (userAddress) => {
     const contract = await connectingWithContract();
-    const userName = await contract.getUsername(userAddress);
+    const userName = await contract.getUserName(userAddress);
     setCurrentUserName(userName);
     setCurrentUserAddress(userAddress);
   };
@@ -129,7 +129,7 @@ export const ChatAppProvider = ({ children }) => {
         sendMessage,
         readUser,
         connectWallet,
-        ChechIfWalletConnected,
+        checkIfWalletConnected,
         account,
         userName,
         friendLists,
